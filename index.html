@@ -76,7 +76,37 @@ ul,ol{list-style:none}
 .nav{display:flex;gap:24px;font-size:14.5px;color:var(--mu)}
 .nav a{text-decoration:none;transition:color .2s}
 .nav a:hover{color:var(--tx)}
-.lang{height:40px;padding:0 15px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--line);font-size:14.5px;font-weight:600;white-space:nowrap;transition:box-shadow .2s}
+.lang{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px 0 12px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--line);font-size:14.5px;font-weight:600;white-space:nowrap;transition:box-shadow .2s}
+.lang svg{width:17px;height:17px;flex:none}
+/* language picker */
+.lg{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(12,12,14,.8)}
+.lg.open{display:flex}
+.lg-box{display:flex;flex-direction:column;width:min(460px,100%);max-height:min(640px,calc(100vh - 40px));background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.lg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 18px 12px}
+.lg-head h2{font-size:20px;font-weight:600}
+.lg-search{margin:0 18px 10px;width:auto;font:inherit;font-size:16px;color:var(--tx);background:var(--well);border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+.lg-search:focus{outline:none;border-color:var(--mu)}
+.lg-list{overflow-y:auto;padding:0 10px 14px;overscroll-behavior:contain}
+.lg-sec{padding:14px 8px 6px;font-size:13px;color:var(--mu)}
+.lg-item{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:12px 10px;border-radius:10px;text-align:left;font-size:16px}
+.lg-item:hover{background:#2E2E33}
+.lg-item small{font-size:13px;color:var(--mu)}
+.lg-item.on{background:var(--well);box-shadow:inset 0 0 0 1.5px var(--caribbean)}
+.lg-item.on small::after{content:"  ✓";color:var(--caribbean)}
+.lg-empty{padding:16px 10px;color:var(--mu)}
+.lg-confirm{display:none;padding:22px 20px 20px}
+.lg.ask .lg-confirm{display:block}
+.lg.ask .lg-search,.lg.ask .lg-list{display:none}
+.lg-confirm h3{font-size:22px;font-weight:600;line-height:1.3}
+.lg-confirm p{margin-top:10px;font-size:15.5px;color:var(--mu)}
+.lg-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.lg-btns .btn{flex:1 1 140px;justify-content:center}
+.btn.go{background:var(--caribbean);color:var(--ink)}
+/* language suggestion */
+.sug{position:fixed;left:50%;bottom:18px;z-index:70;display:none;align-items:center;gap:14px;flex-wrap:wrap;width:min(520px,calc(100vw - 24px));transform:translateX(-50%);padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.45);font-size:15px}
+.sug.show{display:flex}
+.sug span{flex:1 1 200px}
+.sug .btn{height:40px;font-size:14px;padding:0 16px}
 .lang:hover{box-shadow:inset 0 0 0 1.5px var(--mu)}
 .top .w{gap:20px}
 html[lang="hi"] h1{line-height:1.02;font-size:clamp(60px,7.6vw,124px)}
@@ -316,7 +346,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
   .top .w{gap:10px}
   .top .wa .wt{display:none}
   .top .wa{width:40px;padding:0;justify-content:center}
-  .lang{padding:0 13px;font-size:14px}
+  .lang{padding:0 12px 0 10px;font-size:14px;gap:6px}
   .opt{height:42px;padding:0 15px;font-size:14px}
   .lb{padding:64px 12px 16px}
   .lb video{height:auto;width:100%;max-height:70vh}
@@ -330,7 +360,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
 
 <header class="top">
   <div class="w">
-    <a class="brand" href="#top" aria-label="Sarvesh Maurya, back to top"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Sarvesh Maurya</span></a>
+    <a class="brand" href="#top" aria-label="Sarvesh Maurya, back to top"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><span translate="no">Sarvesh Maurya</span></a>
     <nav class="nav" aria-label="Sections">
       <a href="#work">Work</a>
       <a href="#services">Services</a>
@@ -339,7 +369,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
       <a href="#faq">FAQ</a>
       <a href="#contact">Start a project</a>
     </nav>
-    <button type="button" class="lang" id="langBtn" lang="hi" aria-label="हिंदी में पढ़ें">हिंदी</button>
+    <button type="button" class="lang" id="langBtn" aria-haspopup="dialog" aria-label="Change language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span id="langCur" translate="no">English</span></button>
     <a class="btn wa sm" href="https://wa.me/919214031187?text=Hi%20Sarvesh%2C%20I%20saw%20your%20portfolio%20and%20want%20to%20discuss%20a%20video." target="_blank" rel="noopener" aria-label="WhatsApp">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.04c-.24.69-1.42 1.32-1.96 1.37-.5.05-1.13.07-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.26-.29.58-.36.77-.36h.55c.18 0 .42-.07.65.5.24.58.82 2 .89 2.15.07.14.12.31.02.5-.1.19-.14.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.3-.13.59.17.29.74 1.22 1.59 1.97 1.09.97 2.01 1.27 2.3 1.42.29.14.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.38-.24.65-.14.26.1 1.68.79 1.97.94.29.14.48.21.55.33.07.12.07.69-.17 1.37z"/></svg>
       <span class="wt">WhatsApp me</span>
@@ -365,7 +395,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
 
     <div class="monitor" id="monitor">
       <div class="mon-bar">
-        <span><span class="dot" id="mDot"></span><span id="mBar">Atomberg</span></span>
+        <span><span class="dot" id="mDot"></span><span id="mBar" translate="no">Atomberg</span></span>
         <span class="tc" id="mTc" aria-label="Clip time">00:00:00:00</span>
       </div>
       <div class="mon-body">
@@ -374,7 +404,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
           <span class="snd" id="sndTag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l4 6M21 9l-4 6"/></svg><span>Tap for sound</span></span>
         </div>
         <div class="info" aria-live="polite">
-          <h2 id="mName">Atomberg</h2>
+          <h2 id="mName" translate="no">Atomberg</h2>
           <div class="chips" id="mChips"></div>
           <p class="note" id="mNote"></p>
           <p class="did" id="mDid"></p>
@@ -417,7 +447,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
   <div class="rail" id="grid" tabindex="0" aria-label="Projects. Scroll sideways to see more."></div>
   <div class="rail-ctrl">
     <div class="rail-bar" aria-hidden="true"><i id="railThumb"></i></div>
-    <span class="tc rail-count" id="railCount" aria-hidden="true">1 / 10</span>
+    <span class="tc rail-count" id="railCount" aria-hidden="true">1 / 9</span>
     <button type="button" class="ib" id="railPrev" aria-label="Previous projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <button type="button" class="ib" id="railNext" aria-label="Next projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
@@ -553,6 +583,30 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
 </section>
 </main>
 
+<div class="lg" id="lg" role="dialog" aria-modal="true" aria-labelledby="lgTitle">
+  <div class="lg-box">
+    <div class="lg-head">
+      <h2 id="lgTitle">Choose language</h2>
+      <button type="button" class="ib" id="lgX" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <input class="lg-search" id="lgSearch" type="search" autocomplete="off" placeholder="Search language" aria-label="Search language">
+    <div class="lg-list" id="lgList"></div>
+    <div class="lg-confirm" id="lgConfirm" aria-live="polite">
+      <h3 id="lgAskT"></h3>
+      <p id="lgAskD"></p>
+      <div class="lg-btns">
+        <button type="button" class="btn ghost" id="lgNo"></button>
+        <button type="button" class="btn go" id="lgYes"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sug" id="sug" role="status">
+  <span id="sugT"></span>
+  <button type="button" class="btn ghost" id="sugNo">No thanks</button>
+  <button type="button" class="btn go" id="sugYes">Switch</button>
+</div>
+
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Project video">
   <button type="button" class="ib lb-x" id="lbX" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   <div class="lb-stage">
@@ -578,8 +632,6 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
       hi:{ fmt:'स्कूल फ़ीचर', did:'नोएडा के एक इंटरनेशनल स्कूल का टूर, स्मूद ट्रांज़िशन और स्प्लिट-स्क्रीन के साथ।' } },
     { name:'Thrinic',             fmt:'Agency ad',     fol:'',     note:'',                        did:'Agency ad with a teal colour grade, bold captions and a logo reveal.',  vid:'thrinic.mp4',  poster:'thrinic.jpg',  dur:52.55, c:'iris',
       hi:{ fmt:'एजेंसी ऐड', did:'टील कलर ग्रेड, बोल्ड कैप्शन और लोगो रिवील के साथ एजेंसी ऐड।' } },
-    { name:'EditoHub',            fmt:'Business promo', fol:'',    note:'',                        did:'Business promo with a motion graphics opening, captions and on-screen offers.', vid:'editohub.mp4', poster:'editohub.jpg', dur:19.34, c:'coral',
-      hi:{ fmt:'बिज़नेस प्रोमो', did:'मोशन ग्राफ़िक्स ओपनिंग, कैप्शन और ऑन-स्क्रीन ऑफ़र के साथ बिज़नेस प्रोमो।' } },
     { name:'Prishita Singh',      fmt:'Explainer',     fol:'',     note:'',                        did:'Creator reel on AI ad tools, with animated graphics and word-by-word captions.', vid:'prishita.mp4', poster:'prishita.jpg', dur:72.27, c:'cerulean',
       hi:{ fmt:'एक्सप्लेनर', did:'एनिमेटेड ग्राफ़िक्स और वर्ड-बाय-वर्ड कैप्शन के साथ AI ऐड टूल्स पर क्रिएटर रील।' } },
     { name:'Animated captions',   fmt:'Captions',      fol:'',     note:'',                        did:'Kinetic captions that move with the voice.',                          vid:'kinetic.mp4',  poster:'kinetic.jpg',  dur:41.24, c:'lavender',
@@ -595,11 +647,11 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
   /* ===== words that change with the language ===== */
   var UI = {
     en:{ soundOff:'Sound off', soundOn:'Sound on', followers:' followers', copy:'Copy email', copied:'Email copied',
-         err:'Choose at least one service to continue.', langBtn:'हिंदी', langAria:'हिंदी में पढ़ें',
+         err:'Choose at least one service to continue.', lgTitle:'Choose language', lgSearch:'Search language', lgBest:'Best quality', lgAuto:'More languages (translated by Google)', lgNone:'No language found', lgAskT:'Switch to {L}?', lgAskD:'The website will show in {L}.', lgAskG:'The website will open in {L}, translated automatically by Google. Some words may not be perfect.', lgYes:'Yes, switch', lgNo:'Cancel', lgAria:'Change language',
          hello:'Hi Sarvesh, I saw your portfolio and want to start a project.', mName:'Name: ', mIg:'Instagram / brand: ', mNeed:'Need: ', mVid:'Videos: ', mWhen:'Timeline: ', mDet:'Details: ',
          play:'Play ', watch:'Watch ' },
     hi:{ soundOff:'आवाज़ बंद', soundOn:'आवाज़ चालू', followers:' फ़ॉलोअर्स', copy:'ईमेल कॉपी करें', copied:'ईमेल कॉपी हो गया',
-         err:'आगे बढ़ने के लिए कम से कम एक सर्विस चुनें।', langBtn:'English', langAria:'Read in English',
+         err:'आगे बढ़ने के लिए कम से कम एक सर्विस चुनें।', lgTitle:'भाषा चुनें', lgSearch:'भाषा खोजें', lgBest:'सबसे अच्छी क्वालिटी', lgAuto:'और भाषाएँ (Google से अनुवाद)', lgNone:'कोई भाषा नहीं मिली', lgAskT:'{L} में बदलें?', lgAskD:'वेबसाइट {L} में दिखेगी।', lgAskG:'वेबसाइट {L} में खुलेगी, Google से अपने-आप अनुवाद होकर। कुछ शब्द पूरी तरह सही न हों, ऐसा हो सकता है।', lgYes:'हाँ, बदलें', lgNo:'रहने दें', lgAria:'भाषा बदलें',
          hello:'नमस्ते सर्वेश, मैंने आपका पोर्टफोलियो देखा। मुझे एक प्रोजेक्ट के बारे में बात करनी है।', mName:'नाम: ', mIg:'Instagram / ब्रांड: ', mNeed:'ज़रूरत: ', mVid:'वीडियो: ', mWhen:'कब तक: ', mDet:'डिटेल: ',
          play:'चलाएँ: ', watch:'देखें: ' }
   };
@@ -680,7 +732,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
   P.forEach(function(p, i){
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'clip'; b.style.setProperty('--c', col(p)); b.setAttribute('role', 'listitem');
-    b.innerHTML = '<img src="assets/img/' + p.poster + '" alt="" loading="lazy"><span></span>';
+    b.innerHTML = '<img src="assets/img/' + p.poster + '" alt="" loading="lazy"><span translate="no"></span>';
     b.addEventListener('click', function(){ select(i, 0, true); });
     v1.appendChild(b); clipEls.push(b);
     var w = document.createElement('div'); w.className = 'wave'; w.style.setProperty('--c', col(p));
@@ -799,7 +851,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
       var note = T(p, 'note');
       b.innerHTML = '<div class="thumb"><span class="band"></span><img src="assets/img/' + p.poster + '" alt="" loading="lazy">' +
         '<span class="play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15L19.5 12z"/></svg></span></div>' +
-        '<h3>' + esc(T(p, 'name')) + '</h3><div class="meta"><span class="f">' + esc(T(p, 'fmt')) + '</span>' + (p.fol ? '<span>' + esc(p.fol + U('followers')) + '</span>' : '') + (note ? '<span>' + esc(note) + '</span>' : '') + '</div>' +
+        '<h3 translate="no">' + esc(T(p, 'name')) + '</h3><div class="meta"><span class="f">' + esc(T(p, 'fmt')) + '</span>' + (p.fol ? '<span>' + esc(p.fol + U('followers')) + '</span>' : '') + (note ? '<span>' + esc(note) + '</span>' : '') + '</div>' +
         '<p>' + esc(T(p, 'did')) + '</p>';
       b.addEventListener('click', function(){ openLB(i); });
       if(fine && !reduce){
@@ -937,18 +989,98 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(66px,8.4vw,136px);lin
     tNodes.forEach(function(o){ o.n.data = o.a + (lang === 'hi' ? HI[o.en] : o.en) + o.z; });
     hNodes.forEach(function(el){ el.innerHTML = lang === 'hi' ? HI_HTML[el.dataset.i18n] : el._en; });
     phNodes.forEach(function(el){ var t = el._en; el.setAttribute('placeholder', lang === 'hi' && HI[t] ? HI[t] : t); });
-    var lb2 = $('langBtn'); lb2.textContent = U('langBtn'); lb2.setAttribute('aria-label', U('langAria')); lb2.setAttribute('lang', lang === 'hi' ? 'en' : 'hi');
+    if(!onGoog){ $('langCur').textContent = lang === 'hi' ? 'हिंदी' : 'English'; }
+    $('langBtn').setAttribute('aria-label', U('lgAria'));
+    $('lgTitle').textContent = U('lgTitle'); $('lgSearch').setAttribute('placeholder', U('lgSearch'));
+    if(lgEl.classList.contains('open')) renderLangs();
     $('cpEmail').textContent = U('copy');
     if(err.textContent) err.textContent = U('err');
     labelClips(); setInfo(P[cur]); sndUI(); renderRail(); build();
     if(lbOpen){ $('lbName').textContent = T(P[lbI], 'name'); $('lbFmt').textContent = T(P[lbI], 'fmt'); }
     layout();
   }
-  $('langBtn').addEventListener('click', function(){
-    lang = lang === 'hi' ? 'en' : 'hi';
-    try { localStorage.setItem('sm-lang', lang); } catch(e){}
-    applyLang();
+  /* ===== language picker: confirm before switching, Google Translate for every other language ===== */
+  var SITE = 'https://sarveshmaurya.in/';
+  var LANGS = [
+    ['en','English','English',1], ['hi','हिंदी','Hindi',1],
+    ['es','Español','Spanish'], ['ar','العربية','Arabic'], ['fr','Français','French'], ['pt','Português','Portuguese'], ['de','Deutsch','German'], ['ur','اردو','Urdu'],
+    ['bn','বাংলা','Bengali'], ['mr','मराठी','Marathi'], ['ta','தமிழ்','Tamil'], ['te','తెలుగు','Telugu'], ['gu','ગુજરાતી','Gujarati'], ['pa','ਪੰਜਾਬੀ','Punjabi'], ['kn','ಕನ್ನಡ','Kannada'], ['ml','മലയാളം','Malayalam'], ['or','ଓଡ଼ିଆ','Odia'], ['ne','नेपाली','Nepali'], ['si','සිංහල','Sinhala'],
+    ['ja','日本語','Japanese'], ['zh-CN','简体中文','Chinese (Simplified)'], ['zh-TW','繁體中文','Chinese (Traditional)'], ['ko','한국어','Korean'], ['id','Bahasa Indonesia','Indonesian'], ['ms','Bahasa Melayu','Malay'], ['th','ไทย','Thai'], ['vi','Tiếng Việt','Vietnamese'], ['tl','Filipino','Filipino'], ['my','မြန်မာ','Burmese'], ['km','ខ្មែរ','Khmer'],
+    ['ru','Русский','Russian'], ['it','Italiano','Italian'], ['nl','Nederlands','Dutch'], ['tr','Türkçe','Turkish'], ['pl','Polski','Polish'], ['uk','Українська','Ukrainian'], ['ro','Română','Romanian'], ['el','Ελληνικά','Greek'], ['sv','Svenska','Swedish'], ['cs','Čeština','Czech'], ['hu','Magyar','Hungarian'], ['fa','فارسی','Persian'], ['iw','עברית','Hebrew'],
+    ['sw','Kiswahili','Swahili'], ['am','አማርኛ','Amharic'], ['ha','Hausa','Hausa'], ['yo','Yorùbá','Yoruba'], ['zu','isiZulu','Zulu'], ['af','Afrikaans','Afrikaans']
+  ];
+  function findL(c){ for(var i = 0; i < LANGS.length; i++) if(LANGS[i][0].toLowerCase() === String(c).toLowerCase()) return LANGS[i]; return null; }
+  var onGoog = /\.translate\.goog$/.test(location.hostname), googCode = '';
+  if(onGoog){ try { googCode = new URLSearchParams(location.search).get('_x_tr_tl') || ''; } catch(e){} var gl = findL(googCode); $('langCur').textContent = gl ? gl[1] : 'Language'; }
+  function curCode(){ return onGoog ? googCode : lang; }
+  function goGoogle(code){ location.href = 'https://sarveshmaurya-in.translate.goog/?_x_tr_sl=en&_x_tr_tl=' + encodeURIComponent(code) + '&_x_tr_hl=' + encodeURIComponent(code) + '&_x_tr_pto=wapp'; }
+  function switchTo(L){
+    var code = L[0];
+    if(L[3]){
+      if(onGoog){ location.href = SITE + '?lang=' + code; return; }
+      lang = code; try { localStorage.setItem('sm-lang', lang); } catch(e){}
+      applyLang();
+    } else { goGoogle(code); }
+  }
+  var lgEl = $('lg'), lgList = $('lgList'), lgSearch = $('lgSearch'), pick = null, lgLast = null;
+  function renderLangs(){
+    var q = lgSearch.value.trim().toLowerCase(), best = '', auto = '', cc = curCode();
+    LANGS.forEach(function(L){
+      if(q && (L[1] + ' ' + L[2] + ' ' + L[0]).toLowerCase().indexOf(q) < 0) return;
+      var h = '<button type="button" class="lg-item' + (L[0] === cc ? ' on' : '') + '" data-c="' + L[0] + '" translate="no"><span lang="' + L[0] + '">' + esc(L[1]) + '</span><small>' + esc(L[2]) + '</small></button>';
+      if(L[3]) best += h; else auto += h;
+    });
+    lgList.innerHTML = (best ? '<p class="lg-sec">' + U('lgBest') + '</p>' + best : '') + (auto ? '<p class="lg-sec">' + U('lgAuto') + '</p>' + auto : '') + (!best && !auto ? '<p class="lg-empty">' + U('lgNone') + '</p>' : '');
+  }
+  function openLg(){
+    lgLast = document.activeElement; lgEl.classList.remove('ask'); lgSearch.value = ''; renderLangs();
+    lgEl.classList.add('open'); document.body.style.overflow = 'hidden';
+    setTimeout(function(){ (lgList.querySelector('.lg-item.on') || lgList.querySelector('.lg-item') || lgSearch).focus(); }, 30);
+  }
+  function closeLg(){ lgEl.classList.remove('open','ask'); pick = null; document.body.style.overflow = lbOpen ? 'hidden' : ''; if(lgLast) lgLast.focus(); }
+  function ask(L){
+    pick = L; var nm = L[1] + (L[1] !== L[2] ? ' (' + L[2] + ')' : '');
+    $('lgAskT').textContent = U('lgAskT').replace('{L}', nm);
+    $('lgAskD').textContent = U(L[3] ? 'lgAskD' : 'lgAskG').replace('{L}', L[1]);
+    $('lgYes').textContent = U('lgYes'); $('lgNo').textContent = U('lgNo');
+    lgEl.classList.add('ask'); $('lgYes').focus();
+  }
+  $('langBtn').addEventListener('click', openLg);
+  $('lgX').addEventListener('click', closeLg);
+  lgEl.addEventListener('click', function(e){ if(e.target === lgEl) closeLg(); });
+  lgSearch.addEventListener('input', renderLangs);
+  lgList.addEventListener('click', function(e){
+    var b = e.target.closest('.lg-item'); if(!b) return;
+    var L = findL(b.dataset.c); if(!L) return;
+    if(L[0] === curCode()){ closeLg(); return; }
+    ask(L);
   });
+  $('lgNo').addEventListener('click', function(){ pick = null; lgEl.classList.remove('ask'); var on = lgList.querySelector('.lg-item'); if(on) on.focus(); });
+  $('lgYes').addEventListener('click', function(){ var L = pick; closeLg(); if(L) switchTo(L); });
+  document.addEventListener('keydown', function(e){
+    if(!lgEl.classList.contains('open')) return;
+    if(e.key === 'Escape'){ if(lgEl.classList.contains('ask')) $('lgNo').click(); else closeLg(); }
+    else if(e.key === 'Tab'){
+      var f = [].slice.call(lgEl.querySelectorAll('button,input')).filter(function(x){ return x.offsetParent !== null; }), a = f.indexOf(document.activeElement);
+      if(e.shiftKey && a <= 0){ e.preventDefault(); f[f.length-1].focus(); }
+      else if(!e.shiftKey && a === f.length - 1){ e.preventDefault(); f[0].focus(); }
+    }
+  });
+  /* coming back from a Google translation with ?lang=hi or ?lang=en */
+  try { var qp = new URLSearchParams(location.search).get('lang'); if(qp === 'hi' || qp === 'en'){ lang = qp; localStorage.setItem('sm-lang', lang); history.replaceState(null, '', location.pathname + location.hash); } } catch(e){}
+  /* suggest the visitor's own language once */
+  (function(){
+    if(onGoog) return;
+    var seen = null, chosen = null; try { seen = localStorage.getItem('sm-sug'); chosen = localStorage.getItem('sm-lang'); } catch(e){}
+    if(seen || chosen) return;
+    var nl = (navigator.languages && navigator.languages[0]) || navigator.language || '', L = findL(nl) || findL(nl.split('-')[0]);
+    if(!L || L[0] === 'en') return;
+    $('sugT').innerHTML = 'This website is also available in <b lang="' + L[0] + '" translate="no">' + esc(L[1]) + '</b>.';
+    var sg = $('sug'); setTimeout(function(){ sg.classList.add('show'); }, 2500);
+    function done(){ sg.classList.remove('show'); try { localStorage.setItem('sm-sug', '1'); } catch(e){} }
+    $('sugNo').addEventListener('click', done);
+    $('sugYes').addEventListener('click', function(){ done(); switchTo(L); });
+  })();
 
   /* ===== start ===== */
   applyLang(); syncBtn();
